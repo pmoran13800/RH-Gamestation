@@ -1,0 +1,48 @@
+#!/bin/bash
+
+# batocera: load nvidia drivers if possible
+
+addNvidia() {
+    # 20-nvidia.conf
+    if ! cat > /etc/X11/xorg.conf.d/20-nvidia.conf <<EOF
+Section "Module"
+	Load "glx"
+EndSection
+
+Section "Device"
+	Identifier "Nvidia Card"
+	Driver "nvidia"
+	VendorName "NVIDIA Corporation"
+EndSection
+EOF
+    then
+	return 1
+    fi
+
+    # blacklist-nouveau.conf
+    echo "blacklist nouveau" > /etc/modprobe.d/blacklist-nouveau.conf || return 1
+
+    # modules
+    #modprobe nvidia
+    modprobe nvidia_modeset
+    modprobe nvidia_uvm
+    modprobe nvidia_drm
+}
+
+removeNvidia() {
+    # 20-nvidia.conf
+    rm -f "/etc/X11/xorg.conf.d/20-nvidia.conf"    || return 1
+    # blacklist-nouveau.conf
+    rm -f "/etc/modprobe.d/blacklist-nouveau.conf" || return 1
+}
+
+case "${1}" in
+    start)
+	if modprobe nvidia
+	then
+	    addNvidia
+	else
+	    removeNvidia
+	fi
+;;
+esac

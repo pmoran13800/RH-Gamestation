@@ -20,8 +20,17 @@ ifeq ($(BR2_PACKAGE_NVIDIA_DRIVER_XORG),y)
 # are build dependencies of packages that depend on nvidia-driver, so
 # they should be built prior to those packages, and the only simple
 # way to do so is to make nvidia-driver depend on them.
-NVIDIA_DRIVER_DEPENDENCIES = mesa3d-headers xlib_libX11 xlib_libXext
+NVIDIA_DRIVER_DEPENDENCIES = xlib_libX11 xlib_libXext
+
+# batocera - enable both mesa and nvidia
+ifneq ($(BR2_PACKAGE_MESA3D),y)
 NVIDIA_DRIVER_PROVIDES = libgl libegl libgles
+endif
+
+# batocera - enable both mesa and nvidia
+ifneq ($(BR2_PACKAGE_MESA3D),y)
+  NVIDIA_DRIVER_DEPENDENCIES += mesa3d-headers 
+endif
 
 # libGL.so.$(NVIDIA_DRIVER_VERSION) is the legacy libGL.so library; it
 # has been replaced with libGL.so.1.0.0. Installing both is technically
@@ -186,11 +195,20 @@ define NVIDIA_DRIVER_INSTALL_TARGET_CMDS
 		$(INSTALL) -D -m 0644 $(@D)/$(notdir $(m)) \
 			$(TARGET_DIR)/usr/lib/xorg/modules/$(m)
 	)
+	# batocera
+	ln -snf libglx.so.$(NVIDIA_DRIVER_VERSION) $(TARGET_DIR)/usr/lib/xorg/modules/extensions/libglx.so
 	$(foreach p,$(NVIDIA_DRIVER_PROGS), \
 		$(INSTALL) -D -m 0755 $(@D)/$(p) \
 			$(TARGET_DIR)/usr/bin/$(p)
 	)
 	$(NVIDIA_DRIVER_INSTALL_KERNEL_MODULE)
 endef
+
+# batocera
+NVIDIA_DRIVER_POST_INSTALL_TARGET_HOOKS += NVIDIA_DRIVER_INSTALL_SERVICE
+define NVIDIA_DRIVER_INSTALL_SERVICE
+  cp package/nvidia-driver/S15nvidia $(TARGET_DIR)/etc/init.d/S15nvidia
+endef
+
 
 $(eval $(generic-package))
