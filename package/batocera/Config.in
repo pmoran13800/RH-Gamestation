@@ -53,7 +53,6 @@ menu "Controllers"
   source "package/batocera/controllers/virtualgamepads/Config.in"
   source "package/batocera/controllers/xarcade2jstick/Config.in"
   source "package/batocera/controllers/xboxdrv/Config.in"
-  source "package/batocera/controllers/ds4drv/Config.in"
   source "package/batocera/controllers/qt5gamepad/Config.in"
 endmenu
 
@@ -61,6 +60,7 @@ menu "Emulators"
   menu "Retroarch"
     source "package/batocera/emulators/retroarch/retroarch/Config.in"
     source "package/batocera/emulators/retroarch/batocera-bezel/Config.in"
+    source "package/batocera/emulators/retroarch/batocera-shaders/Config.in"
     menu "cores"
     source "package/batocera/emulators/retroarch/libretro/libretro-atari800/Config.in"
     source "package/batocera/emulators/retroarch/libretro/libretro-pocketsnes/Config.in"
@@ -126,6 +126,7 @@ menu "Emulators"
     source "package/batocera/emulators/retroarch/libretro/libretro-dosbox/Config.in"
     source "package/batocera/emulators/retroarch/libretro/libretro-vice/Config.in"
     source "package/batocera/emulators/retroarch/libretro/libretro-mame2016/Config.in"
+    source "package/batocera/emulators/retroarch/libretro/libretro-mame/Config.in"
     endmenu
   endmenu
 
