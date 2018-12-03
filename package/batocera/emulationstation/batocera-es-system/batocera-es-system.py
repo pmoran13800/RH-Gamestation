@@ -14,6 +14,7 @@ class EsSystemConf:
 
     default_parentpath = "/recalbox/share/roms"
     default_command    = "python /usr/lib/python2.7/site-packages/configgen/emulatorlauncher.py %CONTROLLERSCONFIG% -system %SYSTEM% -rom %ROM% -emulator %EMULATOR% -core %CORE% -ratio %RATIO%"
+    default_command    = "python /usr/lib/python2.7/site-packages/configgen/emulatorlauncher.py -system {} -rom %ROM%"
 
     # Generate the es_systems.cfg file by searching the information in the es_system.yml file
     @staticmethod
@@ -93,7 +94,7 @@ class EsSystemConf:
             systemTxt += "        <path>%s</path>\n"           % (pathValue)
         if listExtensions != "":
             systemTxt += "        <extension>%s</extension>\n" % (listExtensions)
-        systemTxt += "        <command>%s</command>\n"     % (EsSystemConf.default_command)
+        systemTxt += "        <command>%s</command>\n"     % (EsSystemConf.default_command.format(system))
         if platformValue != "":
             systemTxt += "        <platform>%s</platform>\n"   % (platformValue)
         systemTxt += "        <theme>%s</theme>\n"         % (EsSystemConf.themeName(system, data))
@@ -126,7 +127,7 @@ class EsSystemConf:
                 else:
                     return data["path"]
         return system
-        
+
     # Returns the path to the rom folder for the emulator
     @staticmethod
     def systemPlatform(system, data):
