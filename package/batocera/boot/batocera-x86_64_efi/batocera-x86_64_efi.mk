@@ -1,12 +1,12 @@
 ################################################################################
 #
-# batocera-x86_64_efi
+# rhgamestation-x86_64_efi
 #
 ################################################################################
 
 BATOCERA_X86_64_EFI_VERSION = 1.1
 BATOCERA_X86_64_EFI_SOURCE = bootx64.efi.gz
-BATOCERA_X86_64_EFI_SITE = https://github.com/batocera-linux/batocera-x86_64_efi/releases/download/$(BATOCERA_X86_64_EFI_VERSION)
+BATOCERA_X86_64_EFI_SITE = https://github.com/pmoran13800/rhgamestation-x86_64_efi/releases/download/$(BATOCERA_X86_64_EFI_VERSION)
 
 define BATOCERA_X86_64_EFI_EXTRACT_CMDS
 	cp $(DL_DIR)/$(BATOCERA_X86_64_EFI_DL_SUBDIR)/$(BATOCERA_X86_64_EFI_SOURCE) $(@D)
